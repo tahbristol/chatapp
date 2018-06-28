@@ -6,7 +6,9 @@
 	margin-top: 50px;
 	padding: 20px;
 }
-
+.container {
+	width: 700px;
+}
 .rooms-list {
 	padding: 10px;
 	display: inline-block;
@@ -16,8 +18,10 @@
 
 .message-list {
 	margin-bottom: 20px;
-	margin-left: 125px;
 	display:inline-block;
+	overflow: scroll;
+	height: 500px;
+	width: 95%;
 }
 
 .message {
@@ -64,4 +68,19 @@ li {
 
 .rooms-list {
 	text-align: left;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+.active {
+	color: white;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: green;
+}
+
+.active a {
+	color: white;
 }

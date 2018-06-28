@@ -15,7 +15,8 @@ class App extends Component {
 		this.state = {
 			messages: [],
 			joinableRooms: [],
-			joinedRooms: []
+			joinedRooms: [],
+			roomId: null
 		}
 	}
 	
@@ -48,6 +49,9 @@ class App extends Component {
 	}
 	
 	subscribeToRoom = (roomId) => {
+		this.setState({
+			messages: []
+		})
 		this.currentUser.subscribeToRoom({
 			roomId: roomId,
 			hooks: {
@@ -58,34 +62,50 @@ class App extends Component {
 				}
 			}
 		})
+		.then(room => {
+			this.setState({
+				roomId: room.id
+			})
+			this.getRooms()
+		})
 	}
 	
 	sendMessage = (text) => {
 		this.currentUser.sendMessage({
 			text: text,
-			roomId: 10418797
+			roomId: this.state.roomId
 		})
 	}
 	
+	createRoom = (name) => {
+		this.currentUser.createRoom({
+			name
+		})
+		.then(room => this.subscribeToRoom(room.id))
+		.catch(err => console.log('error on create room', err))
+	}
   render() {
     return (
       <div className="app">
 				<div className="container">
 					<div className="row">
-						<div className="col-md-1">
+						<div className="col-md-3">
 							<RoomList 
+								roomId={this.state.roomId}
 								subscribeToRoom={this.subscribeToRoom}
 								rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}/>
-							<NewRoomForm />
+							<NewRoomForm createRoom={this.createRoom}/>
 						</div>
-						<div className="col-md-11">
-							<MessageList messages={this.state.messages}/>
+						<div className="col-md-9">
+							<MessageList messages={this.state.messages} roomId={this.state.roomId}/>
 						</div>
 					</div>
 					<div className="row">
 						<div className="col-md-12">
 							<div className="chatForms">
-								<SendMessageForm sendMessage={this.sendMessage}/>
+								<SendMessageForm 
+									disabled={!this.state.roomId}
+									sendMessage={this.sendMessage}/>
 								</div>
 						</div>
 					</div>
