@@ -1,0 +1,59 @@
+.app {
+	border: 1px solid black;
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	padding: 20px;
+}
+
+.rooms-list {
+	padding: 10px;
+	display: inline-block;
+	vertical-align: top;
+	text-align: center;
+}
+
+.message-list {
+	margin-bottom: 20px;
+	margin-left: 125px;
+	display:inline-block;
+}
+
+.message {
+	margin: 5px;
+	padding: 8px;
+}
+
+.message p {
+	margin: 0px;
+	background-color: lightblue;
+	border-radius: 8px;
+	padding: 5px;
+	display: inline-block;
+}
+
+.message h6 {
+	margin: 0px;
+	margin-bottom: 8px;
+}
+
+.chatForms {
+	margin-left: 10px;
+}
+
+.chatForms h5 {
+	display: inline-block;
+}
+.send-message-form {
+	display: inline-block;
+	
+}
+
+.send-message-form input {
+	width: 300px;
+}
+.new-room-form {
+	display: inline-block;
+	vertical-align: bottom;
+}
