@@ -4,7 +4,17 @@ export default class RoomList extends React.Component {
 	render() {
 		return (
 			<div className="rooms-list">
-				<div className="help-text">RoomList</div>
+				<h5>Rooms</h5>
+				<ul>
+				{this.props.rooms.map(room => {
+					return (
+						<li key={room.id} className="room">
+							<a onClick={() => this.props.subscribeToRoom(room.id)}
+								href="#"># {room.name}</a>
+						</li>
+					)
+				})}
+				</ul>
 			</div>
 		)
 	}

@@ -1,6 +1,14 @@
 import React from 'react'
 
 export default class NewRoomForm extends React.Component {
+	
+	constructor(props) {
+		super(props)
+		this.state = {
+			rooms: props.rooms
+		}
+	}
+	
 	render() {
 		return (
 			<div className="new-room-form">

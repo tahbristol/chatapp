@@ -57,3 +57,11 @@
 	display: inline-block;
 	vertical-align: bottom;
 }
+
+li {
+	list-style: none;
+}
+
+.rooms-list {
+	text-align: left;
+}

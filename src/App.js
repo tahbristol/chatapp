@@ -14,8 +14,11 @@ class App extends Component {
 		super(props)
 		this.state = {
 			messages: [],
+			joinableRooms: [],
+			joinedRooms: []
 		}
 	}
+	
 	componentDidMount() {
 		const chatManager = new Chatkit.ChatManager({
 			instanceLocator,
@@ -24,28 +27,55 @@ class App extends Component {
 				url: tokenUrl
 			})
 		})
+		
 		chatManager.connect()
 		.then(currentUser => {
-			currentUser.subscribeToRoom({
-				roomId: 10418797,
-				hooks: {
-					onNewMessage: message => {
-						console.log('message.text:', message.text)
-						this.setState({
-							messages: [...this.state.messages, message]  //return a new message array
-						})
-					}
-				}
+			this.currentUser = currentUser
+			this.getRooms()
+		})
+		.catch(err => console.log('error on connecting: ', err))
+	}
+	
+	getRooms = () => {
+		this.currentUser.getJoinableRooms()
+		.then(joinableRooms => {
+			this.setState({
+				joinableRooms: joinableRooms,
+				joinedRooms: this.currentUser.rooms
 			})
 		})
+		.catch(err => console.log('error on joinableRooms: ', err))
 	}
+	
+	subscribeToRoom = (roomId) => {
+		this.currentUser.subscribeToRoom({
+			roomId: roomId,
+			hooks: {
+				onNewMessage: message => {
+					this.setState({
+						messages: [...this.state.messages, message]  //return a new message array
+					})
+				}
+			}
+		})
+	}
+	
+	sendMessage = (text) => {
+		this.currentUser.sendMessage({
+			text: text,
+			roomId: 10418797
+		})
+	}
+	
   render() {
     return (
       <div className="app">
 				<div className="container">
 					<div className="row">
 						<div className="col-md-1">
-							<RoomList />
+							<RoomList 
+								subscribeToRoom={this.subscribeToRoom}
+								rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}/>
 							<NewRoomForm />
 						</div>
 						<div className="col-md-11">
@@ -55,7 +85,7 @@ class App extends Component {
 					<div className="row">
 						<div className="col-md-12">
 							<div className="chatForms">
-								<SendMessageForm />
+								<SendMessageForm sendMessage={this.sendMessage}/>
 								</div>
 						</div>
 					</div>
